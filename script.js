@@ -1,3 +1,6 @@
+// Import Farcaster Mini App SDK
+import { sdk } from '@farcaster/miniapp-sdk';
+
 class PerfectCircleGame {
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
@@ -21,6 +24,7 @@ class PerfectCircleGame {
         this.canvasRect = null;
         this.currentScore = 0;
         this.userProfile = null;
+        this.loaded = false;
         
         // Initialize Farcaster Mini App SDK
         this.initializeMiniApp();
@@ -32,42 +36,48 @@ class PerfectCircleGame {
     
     async initializeMiniApp() {
         try {
-            // Initialize the Mini App SDK
-            if (window.FarcasterMiniApp) {
-                this.miniApp = new window.FarcasterMiniApp();
-                
-                // Get user profile if available
-                try {
-                    this.userProfile = await this.miniApp.getUser();
-                    console.log('User profile:', this.userProfile);
-                } catch (error) {
-                    console.log('User not authenticated or not in Mini App environment');
-                }
-                
-                // Set up haptic feedback
-                this.setupHaptics();
-                
-                // Set up notifications
-                this.setupNotifications();
+            // Set loaded state
+            if (!this.loaded) {
+                this.loaded = true;
             }
+            
+            // Call ready() when loaded
+            if (this.loaded) {
+                await sdk.actions.ready();
+                console.log('Mini App SDK ready');
+            }
+            
+            // Get user profile if available
+            try {
+                this.userProfile = await sdk.getUser();
+                console.log('User profile:', this.userProfile);
+            } catch (error) {
+                console.log('User not authenticated or not in Mini App environment');
+            }
+            
+            // Set up haptic feedback
+            this.setupHaptics();
+            
+            // Set up notifications
+            this.setupNotifications();
         } catch (error) {
             console.log('Mini App SDK not available, running in standalone mode');
         }
     }
     
     setupHaptics() {
-        if (this.miniApp && this.miniApp.haptics) {
+        if (sdk.haptics) {
             // Add haptic feedback for drawing
             this.canvas.addEventListener('touchstart', () => {
-                this.miniApp.haptics.impact('light');
+                sdk.haptics.impact('light');
             });
         }
     }
     
     setupNotifications() {
-        if (this.miniApp && this.miniApp.notifications) {
+        if (sdk.notifications) {
             // Set up notification permissions
-            this.miniApp.notifications.requestPermission();
+            sdk.notifications.requestPermission();
         }
     }
     
@@ -158,8 +168,8 @@ class PerfectCircleGame {
         this.drawingHint.classList.add('fade-out');
         
         // Haptic feedback
-        if (this.miniApp && this.miniApp.haptics) {
-            this.miniApp.haptics.impact('light');
+        if (sdk.haptics) {
+            sdk.haptics.impact('light');
         }
     }
     
@@ -192,8 +202,8 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (this.miniApp && this.miniApp.haptics) {
-            this.miniApp.haptics.impact('medium');
+        if (sdk.haptics) {
+            sdk.haptics.impact('medium');
         }
     }
     
@@ -227,7 +237,7 @@ class PerfectCircleGame {
         this.showPerfectCircle();
         
         // Send notification for high scores
-        if (score >= 90 && this.miniApp && this.miniApp.notifications) {
+        if (score >= 90 && sdk.notifications) {
             this.sendHighScoreNotification(score);
         }
     }
@@ -370,17 +380,17 @@ class PerfectCircleGame {
         this.updateScoreDisplay();
         
         // Haptic feedback
-        if (this.miniApp && this.miniApp.haptics) {
-            this.miniApp.haptics.impact('light');
+        if (sdk.haptics) {
+            sdk.haptics.impact('light');
         }
     }
     
     async shareScore() {
         const shareText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Can you beat my score? Play now: https://perfect-circle-nine.vercel.app`;
         
-        if (this.miniApp && this.miniApp.share) {
+        if (sdk.share) {
             try {
-                await this.miniApp.share({
+                await sdk.share({
                     title: 'Perfect Circle Score',
                     text: shareText,
                     url: 'https://perfect-circle-nine.vercel.app'
@@ -394,8 +404,8 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (this.miniApp && this.miniApp.haptics) {
-            this.miniApp.haptics.impact('light');
+        if (sdk.haptics) {
+            sdk.haptics.impact('light');
         }
     }
     
@@ -422,9 +432,9 @@ class PerfectCircleGame {
         
         const challengeText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Think you can do better? Challenge me: https://perfect-circle-nine.vercel.app`;
         
-        if (this.miniApp && this.miniApp.share) {
+        if (sdk.share) {
             try {
-                await this.miniApp.share({
+                await sdk.share({
                     title: 'Perfect Circle Challenge',
                     text: challengeText,
                     url: 'https://perfect-circle-nine.vercel.app'
@@ -438,15 +448,15 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (this.miniApp && this.miniApp.haptics) {
-            this.miniApp.haptics.impact('medium');
+        if (sdk.haptics) {
+            sdk.haptics.impact('medium');
         }
     }
     
     async sendHighScoreNotification(score) {
-        if (this.miniApp && this.miniApp.notifications) {
+        if (sdk.notifications) {
             try {
-                await this.miniApp.notifications.send({
+                await sdk.notifications.send({
                     title: '🎯 Amazing Score!',
                     body: `You scored ${score}% on Perfect Circle! Share your achievement with friends!`,
                     data: {
