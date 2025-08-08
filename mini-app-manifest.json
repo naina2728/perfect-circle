@@ -2,10 +2,12 @@
   "name": "Perfect Circle",
   "description": "Draw a perfect circle and challenge your friends! Test your drawing skills and compete with the Farcaster community.",
   "version": "1.0.0",
-  "icon": "https://perfect-circle-nine.vercel.app/icon.png",
+  "icon": "https://raw.githubusercontent.com/naina2728/perfect-circle/main/icon.png",
+  "splash": "https://raw.githubusercontent.com/naina2728/perfect-circle/main/splash%20(1).png",
+  "header": "https://raw.githubusercontent.com/naina2728/perfect-circle/main/header%20(1).png",
   "screenshots": [
-    "https://perfect-circle-nine.vercel.app/screenshot1.png",
-    "https://perfect-circle-nine.vercel.app/screenshot2.png"
+    "https://raw.githubusercontent.com/naina2728/perfect-circle/main/header%20(1).png",
+    "https://raw.githubusercontent.com/naina2728/perfect-circle/main/splash%20(1).png"
   ],
   "permissions": [
     "notifications",
