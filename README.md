@@ -95,4 +95,4 @@ This project is open source and available under the MIT License.
 
 ---
 
-**Enjoy drawing perfect circles!** 🎯 
+**Enjoy drawing perfect circles!** 🎯 # perfect-circle
