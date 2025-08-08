@@ -9,6 +9,8 @@ class PerfectCircleGame {
         this.scorePercentage = document.getElementById('scorePercentage');
         this.scoreMessage = document.getElementById('scoreMessage');
         this.resetBtn = document.getElementById('resetBtn');
+        this.shareBtn = document.getElementById('shareBtn');
+        this.challengeBtn = document.getElementById('challengeBtn');
         
         this.isDrawing = false;
         this.points = [];
@@ -17,11 +19,56 @@ class PerfectCircleGame {
         this.radius = 0;
         this.hasDrawn = false;
         this.canvasRect = null;
+        this.currentScore = 0;
+        this.userProfile = null;
         
+        // Initialize Farcaster Mini App SDK
+        this.initializeMiniApp();
         this.setupCanvas();
         this.bindEvents();
         this.resizeCanvas();
         this.updateScoreDisplay();
+    }
+    
+    async initializeMiniApp() {
+        try {
+            // Initialize the Mini App SDK
+            if (window.FarcasterMiniApp) {
+                this.miniApp = new window.FarcasterMiniApp();
+                
+                // Get user profile if available
+                try {
+                    this.userProfile = await this.miniApp.getUser();
+                    console.log('User profile:', this.userProfile);
+                } catch (error) {
+                    console.log('User not authenticated or not in Mini App environment');
+                }
+                
+                // Set up haptic feedback
+                this.setupHaptics();
+                
+                // Set up notifications
+                this.setupNotifications();
+            }
+        } catch (error) {
+            console.log('Mini App SDK not available, running in standalone mode');
+        }
+    }
+    
+    setupHaptics() {
+        if (this.miniApp && this.miniApp.haptics) {
+            // Add haptic feedback for drawing
+            this.canvas.addEventListener('touchstart', () => {
+                this.miniApp.haptics.impact('light');
+            });
+        }
+    }
+    
+    setupNotifications() {
+        if (this.miniApp && this.miniApp.notifications) {
+            // Set up notification permissions
+            this.miniApp.notifications.requestPermission();
+        }
     }
     
     setupCanvas() {
@@ -56,8 +103,10 @@ class PerfectCircleGame {
         this.canvas.addEventListener('touchmove', this.handleTouch.bind(this), { passive: false });
         this.canvas.addEventListener('touchend', this.stopDrawing.bind(this));
         
-        // Try again button
+        // Mini App buttons
         this.resetBtn.addEventListener('click', this.resetGame.bind(this));
+        this.shareBtn.addEventListener('click', this.shareScore.bind(this));
+        this.challengeBtn.addEventListener('click', this.challengeFriends.bind(this));
         
         // Window resize
         window.addEventListener('resize', this.resizeCanvas.bind(this));
@@ -107,6 +156,11 @@ class PerfectCircleGame {
         
         // Hide drawing hint
         this.drawingHint.classList.add('fade-out');
+        
+        // Haptic feedback
+        if (this.miniApp && this.miniApp.haptics) {
+            this.miniApp.haptics.impact('light');
+        }
     }
     
     draw(e) {
@@ -136,6 +190,11 @@ class PerfectCircleGame {
         } else {
             this.showDrawingHint();
         }
+        
+        // Haptic feedback
+        if (this.miniApp && this.miniApp.haptics) {
+            this.miniApp.haptics.impact('medium');
+        }
     }
     
     addPoint(x, y) {
@@ -162,9 +221,15 @@ class PerfectCircleGame {
         
         // Calculate circularity score
         const score = this.calculateCircularity(radii);
+        this.currentScore = score;
         
         this.showScore(score);
         this.showPerfectCircle();
+        
+        // Send notification for high scores
+        if (score >= 90 && this.miniApp && this.miniApp.notifications) {
+            this.sendHighScoreNotification(score);
+        }
     }
     
     calculateCenter() {
@@ -300,8 +365,99 @@ class PerfectCircleGame {
         this.points = [];
         this.isDrawing = false;
         this.hasDrawn = false;
+        this.currentScore = 0;
         this.showDrawingHint();
         this.updateScoreDisplay();
+        
+        // Haptic feedback
+        if (this.miniApp && this.miniApp.haptics) {
+            this.miniApp.haptics.impact('light');
+        }
+    }
+    
+    async shareScore() {
+        const shareText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Can you beat my score? Play now: https://perfect-circle-nine.vercel.app`;
+        
+        if (this.miniApp && this.miniApp.share) {
+            try {
+                await this.miniApp.share({
+                    title: 'Perfect Circle Score',
+                    text: shareText,
+                    url: 'https://perfect-circle-nine.vercel.app'
+                });
+            } catch (error) {
+                console.log('Share failed:', error);
+                this.fallbackShare(shareText);
+            }
+        } else {
+            this.fallbackShare(shareText);
+        }
+        
+        // Haptic feedback
+        if (this.miniApp && this.miniApp.haptics) {
+            this.miniApp.haptics.impact('light');
+        }
+    }
+    
+    fallbackShare(text) {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Perfect Circle Score',
+                text: text,
+                url: 'https://perfect-circle-nine.vercel.app'
+            });
+        } else {
+            // Copy to clipboard
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Score copied to clipboard!');
+            });
+        }
+    }
+    
+    async challengeFriends() {
+        if (!this.hasDrawn) {
+            alert('Draw a circle first to challenge your friends!');
+            return;
+        }
+        
+        const challengeText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Think you can do better? Challenge me: https://perfect-circle-nine.vercel.app`;
+        
+        if (this.miniApp && this.miniApp.share) {
+            try {
+                await this.miniApp.share({
+                    title: 'Perfect Circle Challenge',
+                    text: challengeText,
+                    url: 'https://perfect-circle-nine.vercel.app'
+                });
+            } catch (error) {
+                console.log('Challenge share failed:', error);
+                this.fallbackShare(challengeText);
+            }
+        } else {
+            this.fallbackShare(challengeText);
+        }
+        
+        // Haptic feedback
+        if (this.miniApp && this.miniApp.haptics) {
+            this.miniApp.haptics.impact('medium');
+        }
+    }
+    
+    async sendHighScoreNotification(score) {
+        if (this.miniApp && this.miniApp.notifications) {
+            try {
+                await this.miniApp.notifications.send({
+                    title: '🎯 Amazing Score!',
+                    body: `You scored ${score}% on Perfect Circle! Share your achievement with friends!`,
+                    data: {
+                        score: score,
+                        url: 'https://perfect-circle-nine.vercel.app'
+                    }
+                });
+            } catch (error) {
+                console.log('Notification failed:', error);
+            }
+        }
     }
 }
 

@@ -192,7 +192,15 @@ body {
     line-height: 1.4;
 }
 
-.reset-btn {
+/* Mini App Actions */
+.mini-app-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.reset-btn, .share-btn, .challenge-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -203,7 +211,6 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    margin-top: 8px;
     min-height: 56px;
     min-width: 140px;
     touch-action: manipulation;
@@ -212,12 +219,30 @@ body {
     justify-content: center;
 }
 
-.reset-btn:hover {
+.share-btn {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+.challenge-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.reset-btn:hover, .share-btn:hover, .challenge-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
 
-.reset-btn:active {
+.share-btn:hover {
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+}
+
+.challenge-btn:hover {
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+.reset-btn:active, .share-btn:active, .challenge-btn:active {
     transform: translateY(0);
 }
 
@@ -327,6 +352,11 @@ body {
         margin: 20px 0;
         font-size: 1rem;
     }
+    
+    .mini-app-actions {
+        flex-direction: row;
+        gap: 12px;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -385,7 +415,7 @@ body {
         font-size: 0.9rem;
     }
     
-    .reset-btn {
+    .reset-btn, .share-btn, .challenge-btn {
         padding: 14px 28px;
         font-size: 0.95rem;
     }

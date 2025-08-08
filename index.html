@@ -3,14 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfect Circle</title>
+    <title>Perfect Circle - Farcaster Mini App</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Farcaster Mini App SDK -->
+    <script src="https://unpkg.com/@farcaster/mini-apps-sdk@latest/dist/index.js"></script>
+    
+    <!-- Meta tags for Mini App -->
+    <meta name="description" content="Draw a perfect circle and challenge your friends! A fun Mini App for Farcaster users.">
+    <meta name="keywords" content="farcaster, mini app, game, circle, drawing">
+    <meta property="og:title" content="Perfect Circle">
+    <meta property="og:description" content="Draw a perfect circle and challenge your friends!">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://perfect-circle-nine.vercel.app/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Perfect Circle">
+    <meta name="twitter:description" content="Draw a perfect circle and challenge your friends!">
+    <meta name="twitter:image" content="https://perfect-circle-nine.vercel.app/og-image.png">
 </head>
 <body>
     <div class="app">
         <header class="header">
             <h1 class="title">Perfect Circle</h1>
-            <p class="subtitle">Draw a perfect circle to test your skills!</p>
+            <p class="subtitle">Draw a perfect circle and challenge your friends!</p>
         </header>
         
         <main class="main">
@@ -35,15 +50,25 @@
                         <div class="score-percentage" id="scorePercentage">0%</div>
                     </div>
                     <p class="score-message" id="scoreMessage">Tap the canvas to start drawing your circle</p>
-                    <button class="reset-btn" id="resetBtn">
-                        <span class="btn-text">Try Again</span>
-                    </button>
+                    
+                    <!-- Mini App specific buttons -->
+                    <div class="mini-app-actions">
+                        <button class="reset-btn" id="resetBtn">
+                            <span class="btn-text">Try Again</span>
+                        </button>
+                        <button class="share-btn" id="shareBtn">
+                            <span class="btn-text">Share Score</span>
+                        </button>
+                        <button class="challenge-btn" id="challengeBtn">
+                            <span class="btn-text">Challenge Friends</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
         
         <footer class="footer">
-            <p>Inspired by <a href="https://neal.fun/perfect-circle" target="_blank">neal.fun</a></p>
+            <p>Built for <a href="https://farcaster.xyz" target="_blank">Farcaster</a> • Inspired by <a href="https://neal.fun/perfect-circle" target="_blank">neal.fun</a></p>
         </footer>
     </div>
     

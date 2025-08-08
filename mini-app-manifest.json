@@ -1,0 +1,57 @@
+{
+  "name": "Perfect Circle",
+  "description": "Draw a perfect circle and challenge your friends! Test your drawing skills and compete with the Farcaster community.",
+  "version": "1.0.0",
+  "icon": "https://perfect-circle-nine.vercel.app/icon.png",
+  "screenshots": [
+    "https://perfect-circle-nine.vercel.app/screenshot1.png",
+    "https://perfect-circle-nine.vercel.app/screenshot2.png"
+  ],
+  "permissions": [
+    "notifications",
+    "wallet",
+    "user"
+  ],
+  "capabilities": {
+    "notifications": {
+      "description": "Send notifications when friends challenge you or beat your score"
+    },
+    "wallet": {
+      "description": "Optional: Send small amounts to challenge friends or tip the developer"
+    },
+    "user": {
+      "description": "Access to user profile for personalized experience and social features"
+    }
+  },
+  "categories": ["games", "social", "entertainment"],
+  "tags": ["drawing", "circle", "game", "challenge", "social"],
+  "author": {
+    "name": "Perfect Circle Team",
+    "url": "https://farcaster.xyz"
+  },
+  "homepage": "https://perfect-circle-nine.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naina2728/perfect-circle"
+  },
+  "bugs": {
+    "url": "https://github.com/naina2728/perfect-circle/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "farcaster",
+    "mini-app",
+    "game",
+    "drawing",
+    "circle",
+    "social",
+    "challenge"
+  ]
+} 
