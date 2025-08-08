@@ -1,0 +1,25 @@
+{
+  "name": "perfect-circle-game",
+  "version": "1.0.0",
+  "description": "A web game where players draw circles and get scored on how close they are to a perfect circle",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "game",
+    "circle",
+    "drawing",
+    "canvas",
+    "mobile",
+    "touch"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/perfect-circle-game.git"
+  },
+  "homepage": "https://your-perfect-circle-game.vercel.app"
+} 

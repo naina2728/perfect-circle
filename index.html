@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Circle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="title">Perfect Circle</h1>
+            <p class="subtitle">Draw a perfect circle to test your skills!</p>
+        </header>
+        
+        <main class="main">
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                
+                <div class="drawing-hint" id="drawingHint">
+                    <div class="hint-content">
+                        <div class="hint-icon">👆</div>
+                        <span class="hint-text">Tap and drag to draw</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="score-container" id="scoreContainer">
+                <div class="score-card">
+                    <h2 class="score-title" id="scoreTitle">Ready to draw!</h2>
+                    <div class="score-bar-container">
+                        <div class="score-bar">
+                            <div class="score-fill" id="scoreFill"></div>
+                        </div>
+                        <div class="score-percentage" id="scorePercentage">0%</div>
+                    </div>
+                    <p class="score-message" id="scoreMessage">Tap the canvas to start drawing your circle</p>
+                    <button class="reset-btn" id="resetBtn">
+                        <span class="btn-text">Try Again</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Inspired by <a href="https://neal.fun/perfect-circle" target="_blank">neal.fun</a></p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
