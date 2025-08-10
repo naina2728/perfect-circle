@@ -35,17 +35,17 @@ class PerfectCircleGame {
     }
     
     async initializeMiniApp() {
-        try {const [loaded, setLoaded] = useState(false);
-
-            useEffect(() => {
-              if (!loaded) {
-                setLoaded(true);
-              }
-            }, []);
-          
-            useEffect(() => {
-              if (loaded) sdk.actions.ready();
-            }, [loaded]);
+        try {
+            // Set loaded state
+            if (!this.loaded) {
+                this.loaded = true;
+            }
+            
+            // Call ready() when loaded
+            if (this.loaded) {
+                await sdk.actions.ready();
+                console.log('Mini App SDK ready');
+            }
             
             // Get user profile if available
             try {
