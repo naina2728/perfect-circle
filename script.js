@@ -32,6 +32,25 @@ class PerfectCircleGame {
         this.bindEvents();
         this.resizeCanvas();
         this.updateScoreDisplay();
+        
+        // Test drawing to verify canvas works
+        this.testCanvas();
+    }
+    
+    testCanvas() {
+        // Draw a test line to verify canvas is working
+        this.ctx.strokeStyle = 'red';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(10, 10);
+        this.ctx.lineTo(50, 50);
+        this.ctx.stroke();
+        
+        // Reset to normal drawing style
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 4;
+        
+        console.log('Test line drawn on canvas');
     }
     
     async initializeMiniApp() {
@@ -82,23 +101,40 @@ class PerfectCircleGame {
     }
     
     setupCanvas() {
-        // Get the actual canvas dimensions
-        this.canvasRect = this.canvas.getBoundingClientRect();
-        this.canvas.width = this.canvasRect.width;
-        this.canvas.height = this.canvasRect.height;
+        // Set canvas size to match display size
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
         
         // Set drawing context properties
         this.ctx.strokeStyle = '#000';
-        this.ctx.lineWidth = 4; // Thicker line for mobile
+        this.ctx.lineWidth = 4;
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
+        
+        console.log('Canvas setup:', {
+            width: this.canvas.width,
+            height: this.canvas.height,
+            rect: rect
+        });
     }
     
     resizeCanvas() {
         // Update canvas rect after resize
-        this.canvasRect = this.canvas.getBoundingClientRect();
-        this.canvas.width = this.canvasRect.width;
-        this.canvas.height = this.canvasRect.height;
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+        
+        // Re-set drawing context properties after resize
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 4;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        
+        console.log('Canvas resized:', {
+            width: this.canvas.width,
+            height: this.canvas.height
+        });
     }
     
     bindEvents() {
@@ -120,15 +156,17 @@ class PerfectCircleGame {
         
         // Window resize
         window.addEventListener('resize', this.resizeCanvas.bind(this));
+        
+        console.log('Events bound to canvas');
     }
     
     getCanvasCoordinates(clientX, clientY) {
         // Get the current canvas rect (it might have changed)
-        this.canvasRect = this.canvas.getBoundingClientRect();
+        const rect = this.canvas.getBoundingClientRect();
         
         // Calculate the correct coordinates relative to the canvas
-        const x = clientX - this.canvasRect.left;
-        const y = clientY - this.canvasRect.top;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
         
         return { x, y };
     }
@@ -147,6 +185,7 @@ class PerfectCircleGame {
     }
     
     startDrawing(e) {
+        console.log('Starting to draw', e);
         this.isDrawing = true;
         this.points = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -158,6 +197,8 @@ class PerfectCircleGame {
         } else {
             coords = e; // Already in canvas coordinates
         }
+        
+        console.log('Drawing coordinates:', coords);
         
         // Add the first point and start the path
         this.addPoint(coords.x, coords.y);
@@ -184,6 +225,8 @@ class PerfectCircleGame {
             coords = e; // Already in canvas coordinates
         }
         
+        console.log('Drawing to:', coords);
+        
         // Add point and draw line to it
         this.addPoint(coords.x, coords.y);
         this.ctx.lineTo(coords.x, coords.y);
@@ -192,6 +235,7 @@ class PerfectCircleGame {
     
     stopDrawing() {
         if (!this.isDrawing) return;
+        console.log('Stopping drawing');
         this.isDrawing = false;
         
         if (this.points.length > 8) { // Lower threshold for mobile
