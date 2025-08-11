@@ -1,6 +1,3 @@
-// Import Farcaster Mini App SDK
-import { sdk } from '@farcaster/miniapp-sdk';
-
 class PerfectCircleGame {
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
@@ -21,20 +18,81 @@ class PerfectCircleGame {
         this.centerY = 0;
         this.radius = 0;
         this.hasDrawn = false;
-        this.canvasRect = null;
         this.currentScore = 0;
         this.userProfile = null;
         this.loaded = false;
+        this.sdk = null;
         
+        // Initialize the game
+        this.init();
+    }
+    
+    async init() {
         // Initialize Farcaster Mini App SDK
-        this.initializeMiniApp();
+        await this.initializeMiniApp();
         this.setupCanvas();
         this.bindEvents();
-        this.resizeCanvas();
         this.updateScoreDisplay();
         
         // Test drawing to verify canvas works
         this.testCanvas();
+    }
+    
+    async initializeMiniApp() {
+        try {
+            // Try to import the Farcaster SDK
+            const sdkModule = await import('@farcaster/miniapp-sdk');
+            this.sdk = sdkModule.sdk;
+            console.log('Farcaster SDK loaded successfully');
+        } catch (error) {
+            console.log('Farcaster SDK not available, running in standalone mode');
+            // Create a mock SDK for standalone mode
+            this.sdk = {
+                actions: {
+                    ready: async () => console.log('Mock SDK ready')
+                },
+                getUser: async () => null,
+                haptics: {
+                    impact: () => {}
+                },
+                notifications: {
+                    requestPermission: () => {},
+                    send: () => {}
+                },
+                share: null
+            };
+        }
+        
+        try {
+            // Set loaded state
+            if (!this.loaded) {
+                this.loaded = true;
+            }
+            
+            // Call ready() when loaded
+            if (this.loaded && this.sdk) {
+                await this.sdk.actions.ready();
+                console.log('Mini App SDK ready');
+            }
+            
+            // Get user profile if available
+            if (this.sdk && this.sdk.getUser) {
+                try {
+                    this.userProfile = await this.sdk.getUser();
+                    console.log('User profile:', this.userProfile);
+                } catch (error) {
+                    console.log('User not authenticated or not in Mini App environment');
+                }
+            }
+            
+            // Set up haptic feedback
+            this.setupHaptics();
+            
+            // Set up notifications
+            this.setupNotifications();
+        } catch (error) {
+            console.log('Mini App SDK initialization failed:', error);
+        }
     }
     
     testCanvas() {
@@ -53,56 +111,28 @@ class PerfectCircleGame {
         console.log('Test line drawn on canvas');
     }
     
-    async initializeMiniApp() {
-        try {
-            // Set loaded state
-            if (!this.loaded) {
-                this.loaded = true;
-            }
-            
-            // Call ready() when loaded
-            if (this.loaded) {
-                await sdk.actions.ready();
-                console.log('Mini App SDK ready');
-            }
-            
-            // Get user profile if available
-            try {
-                this.userProfile = await sdk.getUser();
-                console.log('User profile:', this.userProfile);
-            } catch (error) {
-                console.log('User not authenticated or not in Mini App environment');
-            }
-            
-            // Set up haptic feedback
-            this.setupHaptics();
-            
-            // Set up notifications
-            this.setupNotifications();
-        } catch (error) {
-            console.log('Mini App SDK not available, running in standalone mode');
-        }
-    }
-    
     setupHaptics() {
-        if (sdk.haptics) {
+        if (this.sdk && this.sdk.haptics) {
             // Add haptic feedback for drawing
             this.canvas.addEventListener('touchstart', () => {
-                sdk.haptics.impact('light');
+                this.sdk.haptics.impact('light');
             });
         }
     }
     
     setupNotifications() {
-        if (sdk.notifications) {
+        if (this.sdk && this.sdk.notifications) {
             // Set up notification permissions
-            sdk.notifications.requestPermission();
+            this.sdk.notifications.requestPermission();
         }
     }
     
     setupCanvas() {
-        // Set canvas size to match display size
-        const rect = this.canvas.getBoundingClientRect();
+        // Get the container dimensions
+        const container = this.canvas.parentElement;
+        const rect = container.getBoundingClientRect();
+        
+        // Set canvas size to match container
         this.canvas.width = rect.width;
         this.canvas.height = rect.height;
         
@@ -115,39 +145,28 @@ class PerfectCircleGame {
         console.log('Canvas setup:', {
             width: this.canvas.width,
             height: this.canvas.height,
-            rect: rect
-        });
-    }
-    
-    resizeCanvas() {
-        // Update canvas rect after resize
-        const rect = this.canvas.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
-        
-        // Re-set drawing context properties after resize
-        this.ctx.strokeStyle = '#000';
-        this.ctx.lineWidth = 4;
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        
-        console.log('Canvas resized:', {
-            width: this.canvas.width,
-            height: this.canvas.height
+            containerRect: rect
         });
     }
     
     bindEvents() {
-        // Mouse events
-        this.canvas.addEventListener('mousedown', this.startDrawing.bind(this));
-        this.canvas.addEventListener('mousemove', this.draw.bind(this));
-        this.canvas.addEventListener('mouseup', this.stopDrawing.bind(this));
-        this.canvas.addEventListener('mouseleave', this.stopDrawing.bind(this));
+        // Remove any existing event listeners
+        this.canvas.removeEventListener('mousedown', this.handleMouseDown);
+        this.canvas.removeEventListener('mousemove', this.handleMouseMove);
+        this.canvas.removeEventListener('mouseup', this.handleMouseUp);
+        this.canvas.removeEventListener('touchstart', this.handleTouchStart);
+        this.canvas.removeEventListener('touchmove', this.handleTouchMove);
+        this.canvas.removeEventListener('touchend', this.handleTouchEnd);
         
-        // Touch events with better handling
-        this.canvas.addEventListener('touchstart', this.handleTouch.bind(this), { passive: false });
-        this.canvas.addEventListener('touchmove', this.handleTouch.bind(this), { passive: false });
-        this.canvas.addEventListener('touchend', this.stopDrawing.bind(this));
+        // Bind new event listeners
+        this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        this.canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this));
+        
+        this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+        this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+        this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
         
         // Mini App buttons
         this.resetBtn.addEventListener('click', this.resetGame.bind(this));
@@ -155,53 +174,74 @@ class PerfectCircleGame {
         this.challengeBtn.addEventListener('click', this.challengeFriends.bind(this));
         
         // Window resize
-        window.addEventListener('resize', this.resizeCanvas.bind(this));
+        window.addEventListener('resize', this.handleResize.bind(this));
         
         console.log('Events bound to canvas');
     }
     
+    handleResize() {
+        this.setupCanvas();
+    }
+    
     getCanvasCoordinates(clientX, clientY) {
-        // Get the current canvas rect (it might have changed)
         const rect = this.canvas.getBoundingClientRect();
-        
-        // Calculate the correct coordinates relative to the canvas
         const x = clientX - rect.left;
         const y = clientY - rect.top;
-        
         return { x, y };
     }
     
-    handleTouch(e) {
-        e.preventDefault(); // Prevent scrolling while drawing
-        
-        const touch = e.touches[0] || e.changedTouches[0];
-        const coords = this.getCanvasCoordinates(touch.clientX, touch.clientY);
-        
-        if (e.type === 'touchstart') {
-            this.startDrawing(coords);
-        } else if (e.type === 'touchmove') {
+    handleMouseDown(e) {
+        e.preventDefault();
+        const coords = this.getCanvasCoordinates(e.clientX, e.clientY);
+        this.startDrawing(coords);
+    }
+    
+    handleMouseMove(e) {
+        e.preventDefault();
+        if (this.isDrawing) {
+            const coords = this.getCanvasCoordinates(e.clientX, e.clientY);
             this.draw(coords);
         }
     }
     
-    startDrawing(e) {
-        console.log('Starting to draw', e);
+    handleMouseUp(e) {
+        e.preventDefault();
+        this.stopDrawing();
+    }
+    
+    handleTouchStart(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const coords = this.getCanvasCoordinates(touch.clientX, touch.clientY);
+        this.startDrawing(coords);
+    }
+    
+    handleTouchMove(e) {
+        e.preventDefault();
+        if (this.isDrawing) {
+            const touch = e.touches[0];
+            const coords = this.getCanvasCoordinates(touch.clientX, touch.clientY);
+            this.draw(coords);
+        }
+    }
+    
+    handleTouchEnd(e) {
+        e.preventDefault();
+        this.stopDrawing();
+    }
+    
+    startDrawing(coords) {
+        console.log('Starting to draw at:', coords);
         this.isDrawing = true;
         this.points = [];
+        
+        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Get coordinates - handle both mouse and touch events
-        let coords;
-        if (e.clientX !== undefined) {
-            coords = this.getCanvasCoordinates(e.clientX, e.clientY);
-        } else {
-            coords = e; // Already in canvas coordinates
-        }
+        // Add first point
+        this.points.push(coords);
         
-        console.log('Drawing coordinates:', coords);
-        
-        // Add the first point and start the path
-        this.addPoint(coords.x, coords.y);
+        // Start drawing path
         this.ctx.beginPath();
         this.ctx.moveTo(coords.x, coords.y);
         
@@ -209,36 +249,31 @@ class PerfectCircleGame {
         this.drawingHint.classList.add('fade-out');
         
         // Haptic feedback
-        if (sdk.haptics) {
-            sdk.haptics.impact('light');
+        if (this.sdk && this.sdk.haptics) {
+            this.sdk.haptics.impact('light');
         }
     }
     
-    draw(e) {
+    draw(coords) {
         if (!this.isDrawing) return;
-        
-        // Get coordinates - handle both mouse and touch events
-        let coords;
-        if (e.clientX !== undefined) {
-            coords = this.getCanvasCoordinates(e.clientX, e.clientY);
-        } else {
-            coords = e; // Already in canvas coordinates
-        }
         
         console.log('Drawing to:', coords);
         
-        // Add point and draw line to it
-        this.addPoint(coords.x, coords.y);
+        // Add point
+        this.points.push(coords);
+        
+        // Draw line to this point
         this.ctx.lineTo(coords.x, coords.y);
         this.ctx.stroke();
     }
     
     stopDrawing() {
         if (!this.isDrawing) return;
-        console.log('Stopping drawing');
+        
+        console.log('Stopping drawing, points:', this.points.length);
         this.isDrawing = false;
         
-        if (this.points.length > 8) { // Lower threshold for mobile
+        if (this.points.length > 8) {
             this.hasDrawn = true;
             this.calculateScore();
         } else {
@@ -246,16 +281,9 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (sdk.haptics) {
-            sdk.haptics.impact('medium');
+        if (this.sdk && this.sdk.haptics) {
+            this.sdk.haptics.impact('medium');
         }
-    }
-    
-    addPoint(x, y) {
-        // Ensure coordinates are within canvas bounds
-        const boundedX = Math.max(0, Math.min(x, this.canvas.width));
-        const boundedY = Math.max(0, Math.min(y, this.canvas.height));
-        this.points.push({ x: boundedX, y: boundedY });
     }
     
     calculateScore() {
@@ -281,7 +309,7 @@ class PerfectCircleGame {
         this.showPerfectCircle();
         
         // Send notification for high scores
-        if (score >= 90 && sdk.notifications) {
+        if (score >= 90 && this.sdk && this.sdk.notifications) {
             this.sendHighScoreNotification(score);
         }
     }
@@ -424,17 +452,17 @@ class PerfectCircleGame {
         this.updateScoreDisplay();
         
         // Haptic feedback
-        if (sdk.haptics) {
-            sdk.haptics.impact('light');
+        if (this.sdk && this.sdk.haptics) {
+            this.sdk.haptics.impact('light');
         }
     }
     
     async shareScore() {
         const shareText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Can you beat my score? Play now: https://perfect-circle-nine.vercel.app`;
         
-        if (sdk.share) {
+        if (this.sdk && this.sdk.share) {
             try {
-                await sdk.share({
+                await this.sdk.share({
                     title: 'Perfect Circle Score',
                     text: shareText,
                     url: 'https://perfect-circle-nine.vercel.app'
@@ -448,8 +476,8 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (sdk.haptics) {
-            sdk.haptics.impact('light');
+        if (this.sdk && this.sdk.haptics) {
+            this.sdk.haptics.impact('light');
         }
     }
     
@@ -476,9 +504,9 @@ class PerfectCircleGame {
         
         const challengeText = `🎯 I scored ${this.currentScore}% on Perfect Circle! Think you can do better? Challenge me: https://perfect-circle-nine.vercel.app`;
         
-        if (sdk.share) {
+        if (this.sdk && this.sdk.share) {
             try {
-                await sdk.share({
+                await this.sdk.share({
                     title: 'Perfect Circle Challenge',
                     text: challengeText,
                     url: 'https://perfect-circle-nine.vercel.app'
@@ -492,15 +520,15 @@ class PerfectCircleGame {
         }
         
         // Haptic feedback
-        if (sdk.haptics) {
-            sdk.haptics.impact('medium');
+        if (this.sdk && this.sdk.haptics) {
+            this.sdk.haptics.impact('medium');
         }
     }
     
     async sendHighScoreNotification(score) {
-        if (sdk.notifications) {
+        if (this.sdk && this.sdk.notifications) {
             try {
-                await sdk.notifications.send({
+                await this.sdk.notifications.send({
                     title: '🎯 Amazing Score!',
                     body: `You scored ${score}% on Perfect Circle! Share your achievement with friends!`,
                     data: {
