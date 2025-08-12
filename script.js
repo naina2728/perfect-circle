@@ -96,19 +96,29 @@ class PerfectCircleGame {
     }
     
     testCanvas() {
-        // Draw a test line to verify canvas is working
-        this.ctx.strokeStyle = 'red';
-        this.ctx.lineWidth = 2;
-        this.ctx.beginPath();
-        this.ctx.moveTo(10, 10);
-        this.ctx.lineTo(50, 50);
-        this.ctx.stroke();
-        
-        // Reset to normal drawing style
-        this.ctx.strokeStyle = '#000';
-        this.ctx.lineWidth = 4;
-        
-        console.log('Test line drawn on canvas');
+        // Wait for canvas to be properly set up
+        setTimeout(() => {
+            // Draw a test line to verify canvas is working
+            this.ctx.strokeStyle = 'red';
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            this.ctx.moveTo(20, 20);
+            this.ctx.lineTo(80, 80);
+            this.ctx.stroke();
+            
+            // Draw a test circle
+            this.ctx.strokeStyle = 'blue';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.arc(100, 100, 30, 0, 2 * Math.PI);
+            this.ctx.stroke();
+            
+            // Reset to normal drawing style
+            this.ctx.strokeStyle = '#000';
+            this.ctx.lineWidth = 4;
+            
+            console.log('Test shapes drawn on canvas - you should see a red line and blue circle');
+        }, 100);
     }
     
     setupHaptics() {
@@ -128,24 +138,32 @@ class PerfectCircleGame {
     }
     
     setupCanvas() {
-        // Get the container dimensions
-        const container = this.canvas.parentElement;
-        const rect = container.getBoundingClientRect();
-        
-        // Set canvas size to match container
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
-        
-        // Set drawing context properties
-        this.ctx.strokeStyle = '#000';
-        this.ctx.lineWidth = 4;
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        
-        console.log('Canvas setup:', {
-            width: this.canvas.width,
-            height: this.canvas.height,
-            containerRect: rect
+        // Wait for next frame to ensure DOM is rendered
+        requestAnimationFrame(() => {
+            // Get the container dimensions
+            const container = this.canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            
+            // Set canvas size to match container
+            this.canvas.width = rect.width;
+            this.canvas.height = rect.height;
+            
+            // Set drawing context properties
+            this.ctx.strokeStyle = '#000';
+            this.ctx.lineWidth = 4;
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            
+            // Fill with white background
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            console.log('Canvas setup:', {
+                width: this.canvas.width,
+                height: this.canvas.height,
+                containerRect: rect,
+                canvasElement: this.canvas
+            });
         });
     }
     
@@ -235,8 +253,15 @@ class PerfectCircleGame {
         this.isDrawing = true;
         this.points = [];
         
-        // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // Clear canvas and fill with white background
+        this.ctx.fillStyle = 'white';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Reset drawing context
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 4;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
         
         // Add first point
         this.points.push(coords);
@@ -246,12 +271,16 @@ class PerfectCircleGame {
         this.ctx.moveTo(coords.x, coords.y);
         
         // Hide drawing hint
-        this.drawingHint.classList.add('fade-out');
+        if (this.drawingHint) {
+            this.drawingHint.classList.add('fade-out');
+        }
         
         // Haptic feedback
         if (this.sdk && this.sdk.haptics) {
             this.sdk.haptics.impact('light');
         }
+        
+        console.log('Drawing started, canvas context:', this.ctx);
     }
     
     draw(coords) {
@@ -545,5 +574,11 @@ class PerfectCircleGame {
 
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing game...');
     new PerfectCircleGame();
+});
+
+// Also initialize on window load to ensure everything is ready
+window.addEventListener('load', () => {
+    console.log('Window loaded, game should be ready');
 }); 
