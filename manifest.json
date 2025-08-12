@@ -9,21 +9,22 @@
       "splashImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true",
       "splashBackgroundColor": "#FFFFFF",
       "webhookUrl": "https://perfect-circle-nine.vercel.app/api/webhook",
-      "subtitle": "create a perfect circle and share your score! ",
-      "description": "create a perfect circle and share your score! ",
+      "subtitle": "Create a circle and share your score! ",
+      "description": "Create a circle and share your score! ",
       "primaryCategory": "games",
       "screenshotUrls": [
         "https://github.com/naina2728/perfect-circle/blob/main/perfect%20circle.png?raw=true"
       ],
       "heroImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/header%20(1).png?raw=true",
       "tags": [
+        "fun",
         "games",
-        "fun"
+        "challenge",
+        "social"
       ],
       "tagline": "Draw the Impossible.",
       "ogTitle": "Draw the Impossible.",
-      "ogDescription": "create a perfect circle and share your score! ",
-      "ogImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true",
-      "castShareUrl": "https://github.com/naina2728/perfect-circle/blob/main/header%20(1).png?raw=true"
+      "ogDescription": "Draw the Impossible.",
+      "ogImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true"
     }
   }
