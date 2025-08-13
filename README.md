@@ -96,3 +96,14 @@ This project is open source and available under the MIT License.
 ---
 
 **Enjoy drawing perfect circles!** 🎯 # perfect-circle
+
+## 🚀 Latest Update
+
+**Deployed and ready for Farcaster Mini App integration!** 
+
+- ✅ Account association configured
+- ✅ Meta tags optimized for embedding
+- ✅ Image URLs updated for local serving
+- ✅ Vercel deployment active
+
+**Try it now:** https://perfect-circle-nine.vercel.app
