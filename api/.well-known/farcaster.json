@@ -8,20 +8,20 @@
     "frame": {
       "name": "Perfect circle",
       "version": "1",
-      "iconUrl": "https://github.com/naina2728/perfect-circle/blob/main/public/icon.png",
+      "iconUrl": "https://perfect-circle-nine.vercel.app/icon.png",
       "homeUrl": "https://perfect-circle-nine.vercel.app",
-      "imageUrl": "https://github.com/naina2728/perfect-circle/blob/main/header%20(1).png?raw=true",
+      "imageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "buttonTitle": "Open mini app",
-      "splashImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true",
+      "splashImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png",
       "splashBackgroundColor": "#FFFFFF",
       "webhookUrl": "https://perfect-circle-nine.vercel.app/api/webhook",
       "subtitle": "Create a circle and share your score! ",
       "description": "Create a circle and share your score! ",
       "primaryCategory": "games",
       "screenshotUrls": [
-        "https://github.com/naina2728/perfect-circle/blob/main/perfect%20circle.png?raw=true"
+        "https://perfect-circle-nine.vercel.app/perfect%20circle.png"
       ],
-      "heroImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/header%20(1).png?raw=true",
+      "heroImageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "tags": [
         "fun",
         "games",
@@ -31,6 +31,6 @@
       "tagline": "Draw the Impossible.",
       "ogTitle": "Draw the Impossible.",
       "ogDescription": "Draw the Impossible.",
-      "ogImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true"
+      "ogImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png"
     }
   } 

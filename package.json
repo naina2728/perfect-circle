@@ -4,8 +4,10 @@
   "description": "A web game where players draw circles and get scored on how close they are to a perfect circle",
   "main": "index.html",
   "scripts": {
-    "start": "python3 -m http.server 8000",
-    "dev": "python3 -m http.server 8000"
+    "dev": "cp public/*.png . && python3 -m http.server 8000",
+    "start": "cp public/*.png . && python3 -m http.server 8000",
+    "build": "echo 'Static site - no build required'",
+    "clean": "rm -f *.png *.jpg *.jpeg *.gif *.webp *.svg *.ico"
   },
   "keywords": [
     "game",
