@@ -1,4 +1,10 @@
-{
+{ 
+    "accountAssociation": {
+      "header": "process.env.FARCASTER_HEADER",
+      "payload": "process.env.FARCASTER_PAYLOAD",
+      "signature": "process.env.FARCASTER_SIGNATURE"
+    },
+
     "frame": {
       "name": "Perfect circle",
       "version": "1",
