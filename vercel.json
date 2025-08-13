@@ -32,7 +32,31 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/(.*\\.(png|jpg|jpeg|gif|webp|svg|ico))",
+      "source": "/(.*\\.png)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.jpg)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.jpeg)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.gif)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.webp)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.svg)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*\\.ico)",
       "destination": "/public/$1"
     },
     {
