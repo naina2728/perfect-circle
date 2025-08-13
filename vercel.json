@@ -18,11 +18,19 @@
       "use": "@vercel/static"
     },
     {
+      "src": ".well-known/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
+    {
+      "source": "/.well-known/farcaster.json",
+      "destination": "/api/farcaster"
+    },
     {
       "source": "/((?!.*\\.).*)",
       "destination": "/index.html"
