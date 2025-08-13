@@ -36,7 +36,7 @@ export default function handler(req, res) {
       "splashImageUrl": "https://github.com/naina2728/perfect-circle/blob/main/splash%20(1).png?raw=true",
       "splashBackgroundColor": "#FFFFFF",
       "webhookUrl": "https://perfect-circle-nine.vercel.app/api/webhook",
-      "subtitle": "Create a circle and share your score! ",
+      "subtitle": "Draw a perfect circle!",
       "description": "Create a circle and share your score! ",
       "primaryCategory": "games",
       "screenshotUrls": [
