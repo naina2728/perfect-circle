@@ -28,8 +28,8 @@
   ],
   "rewrites": [
     {
-      "source": "/.well-known/farcaster.json",
-      "destination": "/api/farcaster"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
       "source": "/((?!.*\\.).*)",
