@@ -1,27 +1,26 @@
 { 
    "accountAssociation": {
         "header": "eyJmaWQiOjEwODk4NzksInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg1ZDczYzczNGQ3Yzg0OUUxNTRiNmYwNjczNjY0NDQ0MzJkOTdDZjE3In0",
-        "payload": "eyJkb21haW4iOiJtaW5pYXBwLXNlcGlhLnZlcmNlbC5hcHAifQ",
+        "payload": "eyJkb21haW4iOiJwZXJmZWN0LWNpcmNsZS1uaW5lLnZlcmNlbC5hcHAifQ",
         "signature": "MHhlODk5MGJjZDU5ODg3OGFjMDYzM2RkNDk2NWI1Yjg4YWE4YWIzN2UxY2JjMjA1MjEwNDViNWM0ZjA1OGZlMjQ2MzgxM2UwODc3ODlkNWM3ZmFhY2I2YjNhZmExMjk1MWNjMjVkZDlkZmY4NjkwYjFkYTMyZDdiNDNiOGVhMWQzZjFj"
     },
-
     "frame": {
       "name": "Perfect circle",
       "version": "1",
-      "iconUrl": "https://perfect-circle-mocha.vercel.app/icon.png",
-      "homeUrl": "https://perfect-circle-mocha.vercel.app",
-      "imageUrl": "https://perfect-circle-mocha.vercel.app/header%20(1).png",
+      "iconUrl": "https://perfect-circle-nine.vercel.app/icon.png",
+      "homeUrl": "https://perfect-circle-nine.vercel.app",
+      "imageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "buttonTitle": "Open mini app",
-      "splashImageUrl": "https://perfect-circle-mocha.vercel.app/splash%20(1).png",
+      "splashImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png",
       "splashBackgroundColor": "#FFFFFF",
-      "webhookUrl": "https://perfect-circle-mocha.vercel.app/api/webhook",
+      "webhookUrl": "https://perfect-circle-nine.vercel.app/api/webhook",
       "subtitle": "Create a circle and share your score! ",
       "description": "Create a circle and share your score! ",
       "primaryCategory": "games",
       "screenshotUrls": [
-        "https://perfect-circle-mocha.vercel.app/perfect%20circle.png"
+        "https://perfect-circle-nine.vercel.app/perfect%20circle.png"
       ],
-      "heroImageUrl": "https://perfect-circle-mocha.vercel.app/header%20(1).png",
+      "heroImageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "tags": [
         "fun",
         "games",
@@ -31,6 +30,6 @@
       "tagline": "Draw the Impossible.",
       "ogTitle": "Draw the Impossible.",
       "ogDescription": "Draw the Impossible.",
-      "ogImageUrl": "https://perfect-circle-mocha.vercel.app/splash%20(1).png"
+      "ogImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png"
     }
   } 

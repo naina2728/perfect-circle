@@ -8,20 +8,20 @@
     "frame": {
       "name": "Perfect circle",
       "version": "1",
-      "iconUrl": "https://perfect-circle-mocha.vercel.app/icon.png",
-      "homeUrl": "https://perfect-circle-mocha.vercel.app",
-      "imageUrl": "https://perfect-circle-mocha.vercel.app/header%20(1).png",
+      "iconUrl": "https://perfect-circle-nine.vercel.app/icon.png",
+      "homeUrl": "https://perfect-circle-nine.vercel.app",
+      "imageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "buttonTitle": "Open mini app",
-      "splashImageUrl": "https://perfect-circle-mocha.vercel.app/splash%20(1).png",
+      "splashImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png",
       "splashBackgroundColor": "#FFFFFF",
-      "webhookUrl": "https://perfect-circle-mocha.vercel.app/api/webhook",
+      "webhookUrl": "https://perfect-circle-nine.vercel.app/api/webhook",
       "subtitle": "Draw a perfect circle!",
       "description": "Create a circle and share your score! ",
       "primaryCategory": "games",
       "screenshotUrls": [
-        "https://perfect-circle-mocha.vercel.app/perfect%20circle.png"
+        "https://perfect-circle-nine.vercel.app/perfect%20circle.png"
       ],
-      "heroImageUrl": "https://perfect-circle-mocha.vercel.app/header%20(1).png",
+      "heroImageUrl": "https://perfect-circle-nine.vercel.app/header%20(1).png",
       "tags": [
         "fun",
         "games",
@@ -31,6 +31,6 @@
       "tagline": "Draw the Impossible.",
       "ogTitle": "Draw the Impossible.",
       "ogDescription": "Draw the Impossible.",
-      "ogImageUrl": "https://perfect-circle-mocha.vercel.app/splash%20(1).png"
+      "ogImageUrl": "https://perfect-circle-nine.vercel.app/splash%20(1).png"
     }
   }
